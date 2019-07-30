@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.healthmonitoringapi.dto.InfantDTO;
 import com.healthmonitoringapi.entities.Infant;
+import com.healthmonitoringapi.entities.Parent;
 import com.healthmonitoringapi.services.InfantService;
 
 @RestController
@@ -39,12 +40,13 @@ public class InfantController {
 		return infantsDTO;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Boolean> save(InfantDTO infantDTO) {
+	@RequestMapping(method = RequestMethod.POST, value = "/{id}")
+	public ResponseEntity<Boolean> save(@PathVariable Integer id, InfantDTO infantDTO) {
 		Boolean status = true;
-		HttpStatus httpStatus = HttpStatus.OK;
+		HttpStatus httpStatus = HttpStatus.CREATED;
 		try {
 			Infant infant = infantDTO.shallowMapToEntity();
+			infant.setParent(new Parent(id));
 			 infantService.save(infant);
 		} catch (Exception e) {
 			status = false;

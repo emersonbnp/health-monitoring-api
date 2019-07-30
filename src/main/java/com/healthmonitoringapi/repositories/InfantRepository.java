@@ -12,4 +12,6 @@ public interface InfantRepository extends JpaRepository<Infant, Long> {
 
 	public Optional<Infant> findById(Integer id);
 	
+	public Optional<Infant> findByDevice(String device);
+	
 }

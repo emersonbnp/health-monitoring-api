@@ -33,18 +33,22 @@ public class Infant extends PersistentEntity {
 	private LocalDate birthday;
 	@Column(name = "weight")
 	private BigDecimal weight;
+	@Column(name = "device")
+	private String device;
 	@ManyToOne()
-	@JoinColumn(name = "parent", referencedColumnName = "id")
+	@JoinColumn(name = "idparent", referencedColumnName = "idparent")
 	private Parent parent;
 
-	public Infant () {}
-	
-	public Infant(String firstName, String lastName, LocalDate birthday, BigDecimal weight) {
+	public Infant() {
+	}
+
+	public Infant(String firstName, String lastName, LocalDate birthday, BigDecimal weight, String device) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthday = birthday;
 		this.weight = weight;
+		this.device = device;
 	}
 
 	public String getFirstName() {
@@ -88,7 +92,23 @@ public class Infant extends PersistentEntity {
 	}
 
 	public InfantDTO shallowMap() {
-		return new InfantDTO(firstName, lastName, birthday, weight);
+		return new InfantDTO(id, firstName, lastName, birthday, weight, device);
 	}
-	
+
+	public Parent getParent() {
+		return parent;
+	}
+
+	public void setParent(Parent parent) {
+		this.parent = parent;
+	}
+
+	public String getDevice() {
+		return device;
+	}
+
+	public void setDevice(String device) {
+		this.device = device;
+	}
+
 }

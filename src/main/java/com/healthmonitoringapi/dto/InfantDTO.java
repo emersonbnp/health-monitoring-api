@@ -8,21 +8,34 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.healthmonitoringapi.entities.Infant;
 
-public class InfantDTO implements Serializable{
+public class InfantDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private Integer id;
 	private String firstName;
 	private String lastName;
-	@DateTimeFormat(pattern = "yyyy-MM-dd") 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthday;
 	private BigDecimal weight;
+	private String device;
 
-	public InfantDTO(String firstName, String lastName, LocalDate birthday, BigDecimal weight) {
+	public InfantDTO(Integer id, String firstName, String lastName, LocalDate birthday, BigDecimal weight,
+			String device) {
 		super();
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthday = birthday;
 		this.weight = weight;
+		this.device = device;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -56,8 +69,16 @@ public class InfantDTO implements Serializable{
 	public void setWeight(BigDecimal weight) {
 		this.weight = weight;
 	}
-	
-	public Infant shallowMapToEntity () {
-		return new Infant(firstName, lastName, birthday, null);
+
+	public String getDevice() {
+		return device;
+	}
+
+	public void setDevice(String device) {
+		this.device = device;
+	}
+
+	public Infant shallowMapToEntity() {
+		return new Infant(firstName, lastName, birthday, weight, device);
 	}
 }
