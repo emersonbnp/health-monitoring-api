@@ -30,7 +30,8 @@ public class InfantController {
 			List<Infant> infants = infantService.findAll();
 			if (infants != null && !infants.isEmpty()) {
 				for (Infant infant : infants) {
-					InfantDTO infantDTO = infant.shallowMap();
+					InfantDTO infantDTO = new InfantDTO();
+					infantDTO.parse(infant);
 					infantsDTO.add(infantDTO);
 				}
 			}
@@ -45,9 +46,10 @@ public class InfantController {
 		Boolean status = true;
 		HttpStatus httpStatus = HttpStatus.CREATED;
 		try {
-			Infant infant = infantDTO.shallowMapToEntity();
+			Infant infant = new Infant();
+			infant.parse(infantDTO);
 			infant.setParent(new Parent(id));
-			 infantService.save(infant);
+			infantService.save(infant);
 		} catch (Exception e) {
 			status = false;
 			httpStatus = HttpStatus.BAD_REQUEST;

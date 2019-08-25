@@ -3,6 +3,7 @@ package com.healthmonitoringapi.entities;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -38,6 +40,8 @@ public class Infant extends PersistentEntity {
 	@ManyToOne()
 	@JoinColumn(name = "idparent", referencedColumnName = "idparent")
 	private Parent parent;
+	@OneToOne(mappedBy = "infant", cascade = {CascadeType.ALL}, orphanRemoval = true)
+	private Address address;
 
 	public Infant() {
 	}
@@ -91,9 +95,10 @@ public class Infant extends PersistentEntity {
 		this.id = id;
 	}
 
-	public InfantDTO shallowMap() {
-		return new InfantDTO(id, firstName, lastName, birthday, weight, device);
-	}
+	// public InfantDTO shallowMap() {
+	// return new InfantDTO(id, firstName, lastName, birthday, weight, device,
+	// description);
+	// }
 
 	public Parent getParent() {
 		return parent;
@@ -109,6 +114,35 @@ public class Infant extends PersistentEntity {
 
 	public void setDevice(String device) {
 		this.device = device;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public void parse(InfantDTO infantDTO) {
+		this.id = infantDTO.getId();
+		this.firstName = infantDTO.getFirstName();
+		this.lastName = infantDTO.getLastName();
+		this.birthday = infantDTO.getBirthday();
+		this.device = infantDTO.getDevice();
+		this.weight = infantDTO.getWeight();
+
+		this.address = new Address();
+		this.address.setInfant(this);
+		this.address.setCity(infantDTO.getCity());
+		this.address.setDescription(infantDTO.getDescription());
+		this.address.setDistrict(infantDTO.getDistrict());
+		this.address.setLatitude(infantDTO.getLatitude());
+		this.address.setLongitude(infantDTO.getLongitude());
+		this.address.setNumber(infantDTO.getNumber());
+		this.address.setState(infantDTO.getState());
+		this.address.setStreet(infantDTO.getStreet());
+		this.address.setZipcode(infantDTO.getZipcode());
 	}
 
 }

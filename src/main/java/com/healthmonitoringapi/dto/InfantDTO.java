@@ -14,10 +14,21 @@ public class InfantDTO implements Serializable {
 	private Integer id;
 	private String firstName;
 	private String lastName;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate birthday;
 	private BigDecimal weight;
 	private String device;
+	private BigDecimal latitude;
+	private BigDecimal longitude;
+	private String street;
+	private String city;
+	private String district;
+	private String state;
+	private String number;
+	private String zipcode;
+	private String description;
+	
+	public InfantDTO () {}
 
 	public InfantDTO(Integer id, String firstName, String lastName, LocalDate birthday, BigDecimal weight,
 			String device) {
@@ -78,7 +89,84 @@ public class InfantDTO implements Serializable {
 		this.device = device;
 	}
 
-	public Infant shallowMapToEntity() {
-		return new Infant(firstName, lastName, birthday, weight, device);
+	public BigDecimal getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(BigDecimal latitude) {
+		this.latitude = latitude;
+	}
+
+	public BigDecimal getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(BigDecimal longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	public String getZipcode() {
+		return zipcode;
+	}
+
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public void parse(Infant infant) {
+		this.id = infant.getId();
+		this.birthday = infant.getBirthday();
+		this.device = infant.getDevice();
+		this.firstName = infant.getFirstName();
+		this.lastName = infant.getLastName();
+		this.description = infant.getAddress().getDescription();
 	}
 }

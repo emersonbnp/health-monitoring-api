@@ -32,13 +32,17 @@ public class LoginController {
 			parent.setUserID(authDTO.getUserid());
 			parentRepository.save(parent);
 		}
-		return parent.shallowMap();
+		ParentDTO parentDTO = new ParentDTO();
+		parentDTO.parse(parent);
+		return parentDTO;
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public ParentDTO signup(SignUpDTO signupDTO) {
 		Parent parent = loginService.signUp(signupDTO);
-		return parent.shallowMap();
+		ParentDTO parentDTO = new ParentDTO();
+		parentDTO.parse(parent);
+		return parentDTO;
 	}
 
 }

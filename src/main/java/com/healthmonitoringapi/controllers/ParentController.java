@@ -21,14 +21,15 @@ public class ParentController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<ParentDTO> get(@PathVariable Integer id) {
-		ParentDTO parent = null;
+		ParentDTO parentDTO = new ParentDTO();
 		HttpStatus httpStatus = HttpStatus.OK;
 		try {
-			parent = parentService.findById(id).shallowMap();
+			Parent parent = parentService.findById(id);
+			parentDTO.parse(parent);
 		} catch (Exception e) {
 			httpStatus = HttpStatus.BAD_REQUEST;
 		}
-		ResponseEntity<ParentDTO> response = new ResponseEntity<>(parent, httpStatus);
+		ResponseEntity<ParentDTO> response = new ResponseEntity<>(parentDTO, httpStatus);
 		return response;
     }
 	

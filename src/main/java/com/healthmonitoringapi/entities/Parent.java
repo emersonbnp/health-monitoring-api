@@ -1,6 +1,5 @@
 package com.healthmonitoringapi.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,7 +12,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.healthmonitoringapi.dto.InfantDTO;
 import com.healthmonitoringapi.dto.ParentDTO;
 
 @Entity
@@ -34,6 +32,8 @@ public class Parent extends PersistentEntity {
 	private String email;
 	@Column(name = "userid")
 	private String userID;
+	@Column(name = "phone")
+	private String phone;
 	@OneToMany(mappedBy = "parent")
 	private List<Infant> infants;
 	@OneToOne(mappedBy = "parent")
@@ -110,16 +110,33 @@ public class Parent extends PersistentEntity {
 		this.userID = userID;
 	}
 
-	public ParentDTO shallowMap() {
-		List<InfantDTO> infantsDTO = new ArrayList<InfantDTO>();
-		if (getInfants() != null && !getInfants().isEmpty()) {
-			this.getInfants().forEach(infant -> {
-				InfantDTO infantDTO = new InfantDTO(infant.getId(), infant.getFirstName(), infant.getLastName(),
-						infant.getBirthday(), infant.getWeight(), infant.getDevice());
-				infantsDTO.add(infantDTO);
-			});
-		}
-		return new ParentDTO(id, firstName, lastName, email, infantsDTO);
+	// public ParentDTO shallowMap() {
+	// List<InfantDTO> infantsDTO = new ArrayList<InfantDTO>();
+	// if (getInfants() != null && !getInfants().isEmpty()) {
+	// this.getInfants().forEach(infant -> {
+	// InfantDTO infantDTO = new InfantDTO(infant.getId(),
+	// infant.getFirstName(), infant.getLastName(),
+	// infant.getBirthday(), infant.getWeight(), infant.getDevice(),
+	// infant.getDescription());
+	// infantsDTO.add(infantDTO);
+	// });
+	// }
+	// return new ParentDTO(id, firstName, lastName, email, infantsDTO);
+	// }
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public void parse(ParentDTO parentDTO) {
+		this.firstName = parentDTO.getFirstName();
+		this.lastName = parentDTO.getLastName();
+		this.email = parentDTO.getEmail();
+		this.phone = parentDTO.getPhone();
 	}
 
 }

@@ -35,7 +35,9 @@ public class LoginServiceImpl implements LoginService {
 	@Override
 	public Parent signUp(SignUpDTO signupDTO) {
 		
-		Parent parent = signupDTO.getParent().deepMapToEntity();
+		ParentDTO parentDTO = signupDTO.getParent();
+		Parent parent = new Parent();
+		parent.parse(parentDTO);
 		parent = parentRepository.save(parent);
 		
 		User user = new User();
