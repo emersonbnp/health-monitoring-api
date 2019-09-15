@@ -14,6 +14,7 @@ public class SignUpDTO implements Serializable {
 	private String firstName;
 	private String lastName;
 	private String email;
+	private String phone;
 
 	public String getUsername() {
 		return username;
@@ -63,14 +64,23 @@ public class SignUpDTO implements Serializable {
 		this.email = email;
 	}
 
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	public ParentDTO getParent() {
-		return new ParentDTO(firstName, lastName, email);
+		return new ParentDTO(firstName, lastName, email, phone);
 	}
 
 	public void setParent(ParentDTO parent) {
 		this.email = parent.getEmail();
 		this.firstName = parent.getFirstName();
 		this.lastName = parent.getLastName();
+		this.phone = parent.getPhone();
 	}
 
 }

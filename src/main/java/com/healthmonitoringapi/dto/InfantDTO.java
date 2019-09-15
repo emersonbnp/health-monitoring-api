@@ -164,6 +164,7 @@ public class InfantDTO implements Serializable {
 	public void parse(Infant infant) {
 		this.id = infant.getId();
 		this.birthday = infant.getBirthday();
+		this.weight = infant.getWeight();
 		this.device = infant.getDevice();
 		this.firstName = infant.getFirstName();
 		this.lastName = infant.getLastName();

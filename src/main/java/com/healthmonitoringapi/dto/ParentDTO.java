@@ -26,11 +26,12 @@ public class ParentDTO implements Serializable {
 		this.infants = infants;
 	}
 
-	public ParentDTO(String firstName, String lastName, String email) {
+	public ParentDTO(String firstName, String lastName, String email, String phone) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.phone = phone;
 	}
 
 	public ParentDTO() {

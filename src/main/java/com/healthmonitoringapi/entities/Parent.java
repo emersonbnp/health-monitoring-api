@@ -28,7 +28,7 @@ public class Parent extends PersistentEntity {
 	private String firstName;
 	@Column(name = "lastname")
 	private String lastName;
-	@Column(name = "birthday")
+	@Column(name = "email")
 	private String email;
 	@Column(name = "userid")
 	private String userID;
