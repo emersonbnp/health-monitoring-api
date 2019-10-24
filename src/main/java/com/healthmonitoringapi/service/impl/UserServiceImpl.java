@@ -1,5 +1,7 @@
 package com.healthmonitoringapi.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,11 @@ public class UserServiceImpl implements UserService {
 	public User findByEmailAndPassword(String username, String password) throws EntityNotFoundException {
 		return userRepository.findByUsernameAndPassword(username, password)
 				.orElseThrow(() -> new EntityNotFoundException());
+	}
+
+	@Override
+	public Optional<User> findByEmail(String email) {
+		return userRepository.findByEmail(email);
 	}
 
 }

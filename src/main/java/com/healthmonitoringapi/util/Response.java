@@ -15,6 +15,8 @@ public class Response <T> {
 	public Response(List<String> errors) {
 		this.errors = errors;
 	}
+	public Response() {
+	}
 	private T data;
 	private List<String> errors = new ArrayList<>();
 	

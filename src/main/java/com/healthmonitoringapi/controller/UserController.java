@@ -28,7 +28,9 @@ public class UserController extends BasicController<UserDTO> {
 		if (result.getAllErrors().isEmpty()) {
 			User user= new User();
 			user.parse(userDTO);
-			userService.save(user);
+			
+			userDTO = new UserDTO();
+			userDTO.parse(userService.save(user));
 			return new ResponseEntity<Response<UserDTO>>(new Response<UserDTO>(userDTO), HttpStatus.CREATED);
 		} else {
 			return error(result);
