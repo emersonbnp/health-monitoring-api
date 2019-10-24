@@ -40,9 +40,9 @@ public class InfantController extends BasicController<InfantDTO> {
 
 	@GetMapping
 	public ResponseEntity<Response<List<InfantDTO>>> find(
-			@RequestParam(name = "limit", defaultValue = "${pagination.default_limit}", required = false) Integer limit,
-			@RequestParam(name = "offset", defaultValue = "${pagination.default_offset}", required = false) Integer offset,
-			@RequestParam(name = "order_by", defaultValue = "${pagination.default_order}", required = false) String order)
+			@RequestParam(name = "limit", defaultValue = "5", required = false) Integer limit,
+			@RequestParam(name = "offset", defaultValue = "0", required = false) Integer offset,
+			@RequestParam(name = "order_by", defaultValue = "asc", required = false) String order)
 			throws UserNotFoundException {
 
 		Direction direction = order.equalsIgnoreCase("asc") ? Direction.ASC : Direction.DESC;

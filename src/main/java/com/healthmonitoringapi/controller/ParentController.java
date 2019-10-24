@@ -18,6 +18,8 @@ import com.healthmonitoringapi.entity.Parent;
 import com.healthmonitoringapi.service.ParentService;
 import com.healthmonitoringapi.util.Response;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 @RestController
 @RequestMapping("/parent")
 public class ParentController extends BasicController<ParentDTO> {
@@ -34,6 +36,7 @@ public class ParentController extends BasicController<ParentDTO> {
 
 	}
 
+	@ApiIgnore
 	@PostMapping
 	public ResponseEntity<Response<ParentDTO>> save(@Valid @RequestBody ParentDTO parentDTO, BindingResult result) {
 		if (result.getAllErrors().isEmpty()) {
