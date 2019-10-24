@@ -6,6 +6,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthmonitoringapi.dto.InfantDTO;
@@ -26,6 +31,7 @@ import com.healthmonitoringapi.service.InfantService;
 import com.healthmonitoringapi.util.Response;
 import com.healthmonitoringapi.util.SecurityUtils;
 
+
 @RestController
 @RequestMapping("/infant")
 public class InfantController extends BasicController<InfantDTO> {
@@ -33,14 +39,24 @@ public class InfantController extends BasicController<InfantDTO> {
 	@Autowired
 	private InfantService infantService;
 
-	@GetMapping(path = "/find-all")
-	public ResponseEntity<Response<List<InfantDTO>>> find() throws UserNotFoundException {
+	@GetMapping
+	public ResponseEntity<Response<List<InfantDTO>>> find(
+			@RequestParam(name = "limit", defaultValue = "1", required = false) Integer limit, 
+			@RequestParam(name = "offset", defaultValue = "0", required = false) Integer offset, 
+			@RequestParam(name = "order_by", defaultValue = "asc", required = false) String order)
+			throws UserNotFoundException {
+		
+		Direction direction = order.equalsIgnoreCase("asc") ? Direction.ASC : Direction.DESC;
 
 		User user = SecurityUtils.getAuthenticatedUser();
 		Parent parent = user.getParent();
 
+		Sort sort = Sort.by(direction, "id");
+		
+		Pageable pageable = PageRequest.of(offset, limit, sort);
+
 		List<InfantDTO> infantsDTO = new ArrayList<>();
-		List<Infant> infants = infantService.findByParent(parent);
+		List<Infant> infants = infantService.findByParent(parent, pageable);
 		if (infants != null && !infants.isEmpty()) {
 			for (Infant infant : infants) {
 				InfantDTO infantDTO = new InfantDTO();

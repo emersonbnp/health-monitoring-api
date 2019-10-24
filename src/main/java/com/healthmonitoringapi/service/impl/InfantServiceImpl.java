@@ -3,6 +3,7 @@ package com.healthmonitoringapi.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.healthmonitoringapi.entity.Infant;
@@ -33,8 +34,8 @@ public class InfantServiceImpl implements InfantService {
 	}
 
 	@Override
-	public List<Infant> findByParent(Parent parent) {
-		return this.infantRepository.findByParent(parent);
+	public List<Infant> findByParent(Parent parent, Pageable pageable) {
+		return this.infantRepository.findByParent(parent, pageable);
 	}
 
 	@Override

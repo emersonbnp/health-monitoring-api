@@ -2,6 +2,8 @@ package com.healthmonitoringapi.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+
 import com.healthmonitoringapi.entity.Infant;
 import com.healthmonitoringapi.entity.Parent;
 import com.healthmonitoringapi.exception.EntityNotFoundException;
@@ -14,7 +16,7 @@ public interface InfantService {
 
 	List<Infant> findAll();
 
-	List<Infant> findByParent(Parent parent);
+	List<Infant> findByParent(Parent parent, Pageable pageable);
 
 	Infant findByIdAndParent(Integer id, Parent parent) throws EntityNotFoundException;
 	
