@@ -39,7 +39,9 @@ public class ParentController extends BasicController<ParentDTO> {
 		if (result.getAllErrors().isEmpty()) {
 			Parent parent = new Parent();
 			parent.parse(parentDTO);
-			parentService.save(parent);
+			
+			parentDTO = new ParentDTO();
+			parentDTO.parse(parentService.save(parent));
 			return new ResponseEntity<Response<ParentDTO>>(new Response<ParentDTO>(parentDTO), HttpStatus.CREATED);
 		} else {
 			return error(result);
