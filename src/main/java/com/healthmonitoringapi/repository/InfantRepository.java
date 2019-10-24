@@ -17,7 +17,7 @@ public interface InfantRepository extends JpaRepository<Infant, Long> {
 
 	public Optional<Infant> findByDevice(String device);
 
-	public List<Infant> findByParent(Parent parent, Pageable pageable);
+	public Optional<List<Infant>> findByParent(Parent parent, Pageable pageable);
 
 	public Optional<Infant> findByIdAndParent(Integer id, Parent parent);
 

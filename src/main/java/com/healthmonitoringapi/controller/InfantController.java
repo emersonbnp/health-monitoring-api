@@ -31,7 +31,6 @@ import com.healthmonitoringapi.service.InfantService;
 import com.healthmonitoringapi.util.Response;
 import com.healthmonitoringapi.util.SecurityUtils;
 
-
 @RestController
 @RequestMapping("/infant")
 public class InfantController extends BasicController<InfantDTO> {
@@ -41,28 +40,26 @@ public class InfantController extends BasicController<InfantDTO> {
 
 	@GetMapping
 	public ResponseEntity<Response<List<InfantDTO>>> find(
-			@RequestParam(name = "limit", defaultValue = "1", required = false) Integer limit, 
-			@RequestParam(name = "offset", defaultValue = "0", required = false) Integer offset, 
-			@RequestParam(name = "order_by", defaultValue = "asc", required = false) String order)
+			@RequestParam(name = "limit", defaultValue = "${pagination.default_limit}", required = false) Integer limit,
+			@RequestParam(name = "offset", defaultValue = "${pagination.default_offset}", required = false) Integer offset,
+			@RequestParam(name = "order_by", defaultValue = "${pagination.default_order}", required = false) String order)
 			throws UserNotFoundException {
-		
+
 		Direction direction = order.equalsIgnoreCase("asc") ? Direction.ASC : Direction.DESC;
 
 		User user = SecurityUtils.getAuthenticatedUser();
 		Parent parent = user.getParent();
 
 		Sort sort = Sort.by(direction, "id");
-		
+
 		Pageable pageable = PageRequest.of(offset, limit, sort);
 
 		List<InfantDTO> infantsDTO = new ArrayList<>();
 		List<Infant> infants = infantService.findByParent(parent, pageable);
-		if (infants != null && !infants.isEmpty()) {
-			for (Infant infant : infants) {
-				InfantDTO infantDTO = new InfantDTO();
-				infantDTO.parse(infant);
-				infantsDTO.add(infantDTO);
-			}
+		for (Infant infant : infants) {
+			InfantDTO infantDTO = new InfantDTO();
+			infantDTO.parse(infant);
+			infantsDTO.add(infantDTO);
 		}
 		return new ResponseEntity<Response<List<InfantDTO>>>(new Response<List<InfantDTO>>(infantsDTO), HttpStatus.OK);
 	}
@@ -93,6 +90,7 @@ public class InfantController extends BasicController<InfantDTO> {
 			Infant infant = new Infant();
 			infant.parse(infantDTO);
 			infant.setParent(parent);
+
 			infantDTO = new InfantDTO();
 			infantDTO.parse(infantService.save(infant));
 			return new ResponseEntity<Response<InfantDTO>>(new Response<InfantDTO>(infantDTO), HttpStatus.CREATED);

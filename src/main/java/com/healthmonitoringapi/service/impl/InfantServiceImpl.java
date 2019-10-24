@@ -1,5 +1,6 @@
 package com.healthmonitoringapi.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +28,10 @@ public class InfantServiceImpl implements InfantService {
 	public Infant save(Infant infant) throws EntityNotFoundException {
 		return this.infantRepository.save(infant);
 	}
-
-	@Override
-	public List<Infant> findAll() {
-		return this.infantRepository.findAll();
-	}
-
+	
 	@Override
 	public List<Infant> findByParent(Parent parent, Pageable pageable) {
-		return this.infantRepository.findByParent(parent, pageable);
+		return this.infantRepository.findByParent(parent, pageable).orElse(new ArrayList<Infant>());
 	}
 
 	@Override

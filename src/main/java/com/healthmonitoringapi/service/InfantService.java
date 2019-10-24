@@ -14,8 +14,6 @@ public interface InfantService {
 
 	Infant save(Infant infant) throws EntityNotFoundException;
 
-	List<Infant> findAll();
-
 	List<Infant> findByParent(Parent parent, Pageable pageable);
 
 	Infant findByIdAndParent(Integer id, Parent parent) throws EntityNotFoundException;
