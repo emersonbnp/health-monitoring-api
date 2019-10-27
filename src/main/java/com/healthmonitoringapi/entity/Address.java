@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,7 +51,7 @@ public class Address implements Serializable {
 	@Column(name = "description")
 	private String description;
 	@JoinColumn(name = "idinfant", referencedColumnName = "idinfant")
-	@OneToOne()
+	@OneToOne(fetch = FetchType.LAZY)
 	private Infant infant;
 
 	public void parse(AddressDTO addressDTO, Infant infant) {

@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,17 +40,21 @@ public class InfantController extends BasicController<InfantDTO> {
 	@Autowired
 	private InfantService infantService;
 
+	private static final Logger logger = LoggerFactory.getLogger(InfantController.class);
+
 	@GetMapping
-	public ResponseEntity<Response<List<InfantDTO>>> find(
+	public ResponseEntity<Response<List<InfantDTO>>> findByParent(
 			@RequestParam(name = "limit", defaultValue = "5", required = false) Integer limit,
 			@RequestParam(name = "offset", defaultValue = "0", required = false) Integer offset,
 			@RequestParam(name = "order_by", defaultValue = "asc", required = false) String order)
 			throws UserNotFoundException {
 
-		Direction direction = order.equalsIgnoreCase("asc") ? Direction.ASC : Direction.DESC;
-
 		User user = SecurityUtils.getAuthenticatedUser();
 		Parent parent = user.getParent();
+
+		logger.info("Looking for infants which parent is {}", parent.getId());
+
+		Direction direction = order.equalsIgnoreCase("asc") ? Direction.ASC : Direction.DESC;
 
 		Sort sort = Sort.by(direction, "id");
 

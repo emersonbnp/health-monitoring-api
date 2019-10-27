@@ -9,12 +9,13 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.healthmonitoringapi.entity.Infant;
 
 import lombok.Data;
 
 @Data
-//@EqualsAndHashCode(callSuper = false)
 public class InfantDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -33,6 +34,7 @@ public class InfantDTO implements Serializable {
 	@Length(min = 10, max = 20, message = "Device should have between 10 and 20 letters")
 	private String device;
 	@NotNull(message = "Address info must not be empty")
+	@JsonInclude(Include.NON_NULL)
 	private AddressDTO address;
 
 	public void parse(Infant infant) {

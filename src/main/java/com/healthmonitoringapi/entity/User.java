@@ -15,10 +15,12 @@ import com.healthmonitoringapi.dto.UserDTO;
 import com.healthmonitoringapi.util.BCryptUtil;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "user")
 @Data
+@EqualsAndHashCode(exclude = "parent")
 public class User implements Serializable {
 
 	/**

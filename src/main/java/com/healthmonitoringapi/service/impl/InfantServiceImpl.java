@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +27,13 @@ public class InfantServiceImpl implements InfantService {
 	}
 
 	@Override
+	@CacheEvict(value = "findByParent", allEntries = true)
 	public Infant save(Infant infant) throws EntityNotFoundException {
 		return this.infantRepository.save(infant);
 	}
 	
 	@Override
+	@Cacheable(value = "findByParent", key="#parent.id")
 	public List<Infant> findByParent(Parent parent, Pageable pageable) {
 		return this.infantRepository.findByParent(parent, pageable).orElse(new ArrayList<Infant>());
 	}

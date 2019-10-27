@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,10 +45,11 @@ public class Infant implements Serializable {
 	private BigDecimal weight;
 	@Column(name = "device")
 	private String device;
-	@ManyToOne()
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idparent", referencedColumnName = "idparent")
 	private Parent parent;
-	@OneToOne(mappedBy = "infant", cascade = { CascadeType.ALL }, orphanRemoval = true)
+	@OneToOne(mappedBy = "infant", cascade = { CascadeType.ALL }, 
+			orphanRemoval = true, fetch = FetchType.LAZY)
 	private Address address;
 
 	public void parse(InfantDTO infantDTO) {
