@@ -5,10 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
-import com.healthmonitoringapi.security.utils.JwtTokenUtil;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -24,12 +20,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Profile("dev")
 @EnableSwagger2
 public class SwaggerConfig {
-
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
-
-	@Autowired
-	private UserDetailsService userDetailsService;
 	
 	@Value("${version}")
 	private String version;
@@ -48,16 +38,6 @@ public class SwaggerConfig {
 		return new ApiInfoBuilder().title("Health Monitoring API")
 				.description("Health Monitoring API - Documentação de acesso aos endpoints.").version(version)
 				.build();
-	}
-
-	@Bean
-	public SecurityConfiguration security() {
-		String token;
-		UserDetails userDetails = this.userDetailsService.loadUserByUsername(swaggerUserEmail);
-		token = this.jwtTokenUtil.getToken(userDetails);
-
-		return new SecurityConfiguration(null, null, null, null, "Bearer " + token, ApiKeyVehicle.HEADER,
-				"Authorization", ",");
 	}
 
 }

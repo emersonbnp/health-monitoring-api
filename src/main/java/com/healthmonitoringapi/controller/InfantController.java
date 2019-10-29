@@ -26,12 +26,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.healthmonitoringapi.dto.InfantDTO;
 import com.healthmonitoringapi.entity.Infant;
 import com.healthmonitoringapi.entity.Parent;
-import com.healthmonitoringapi.entity.User;
 import com.healthmonitoringapi.exception.EntityNotFoundException;
 import com.healthmonitoringapi.exception.UserNotFoundException;
 import com.healthmonitoringapi.service.InfantService;
+import com.healthmonitoringapi.service.ParentService;
 import com.healthmonitoringapi.util.Response;
-import com.healthmonitoringapi.util.SecurityUtils;
 
 @RestController
 @RequestMapping("/infant")
@@ -39,18 +38,22 @@ public class InfantController extends BasicController<InfantDTO> {
 
 	@Autowired
 	private InfantService infantService;
+	
+	@Autowired
+	private ParentService parentService;
 
 	private static final Logger logger = LoggerFactory.getLogger(InfantController.class);
 
 	@GetMapping
 	public ResponseEntity<Response<List<InfantDTO>>> findByParent(
+			@RequestParam(name = "parentId", required = true) Integer parentId,
 			@RequestParam(name = "limit", defaultValue = "5", required = false) Integer limit,
 			@RequestParam(name = "offset", defaultValue = "0", required = false) Integer offset,
 			@RequestParam(name = "order_by", defaultValue = "asc", required = false) String order)
 			throws UserNotFoundException {
 
-		User user = SecurityUtils.getAuthenticatedUser();
-		Parent parent = user.getParent();
+		Parent parent = new Parent();
+		parent.setId(parentId);
 
 		logger.info("Looking for infants which parent is {}", parent.getId());
 
@@ -70,13 +73,15 @@ public class InfantController extends BasicController<InfantDTO> {
 		return new ResponseEntity<Response<List<InfantDTO>>>(new Response<List<InfantDTO>>(infantsDTO), HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/{id}")
-	public ResponseEntity<Response<InfantDTO>> find(@PathVariable Integer id)
+	@GetMapping(path = "/{parentId}/{infantId}")
+	public ResponseEntity<Response<InfantDTO>> find(
+			@PathVariable Integer parentId,
+			@PathVariable Integer infantId)
 			throws UserNotFoundException, EntityNotFoundException {
-		User user = SecurityUtils.getAuthenticatedUser();
-		Parent parent = user.getParent();
+		
+		Parent parent = parentService.findById(parentId);
 
-		Infant infant = infantService.findByIdAndParent(id, parent);
+		Infant infant = infantService.findByIdAndParent(infantId, parent);
 
 		InfantDTO infantDTO = new InfantDTO();
 		infantDTO.parse(infant);
@@ -85,13 +90,15 @@ public class InfantController extends BasicController<InfantDTO> {
 
 	}
 
-	@PostMapping
-	public ResponseEntity<Response<InfantDTO>> save(@RequestBody @Valid InfantDTO infantDTO, BindingResult result)
+	@PostMapping(path = "/{parentId}")
+	public ResponseEntity<Response<InfantDTO>> save(
+			@PathVariable Integer parentId,
+			@RequestBody @Valid InfantDTO infantDTO, 
+			BindingResult result)
 			throws UserNotFoundException, EntityNotFoundException {
 		if (result.getAllErrors().isEmpty()) {
 
-			User user = SecurityUtils.getAuthenticatedUser();
-			Parent parent = user.getParent();
+			Parent parent = parentService.findById(parentId);
 
 			Infant infant = new Infant();
 			infant.parse(infantDTO);

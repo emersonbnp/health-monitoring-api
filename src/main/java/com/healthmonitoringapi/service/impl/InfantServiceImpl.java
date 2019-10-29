@@ -31,17 +31,16 @@ public class InfantServiceImpl implements InfantService {
 	public Infant save(Infant infant) throws EntityNotFoundException {
 		return this.infantRepository.save(infant);
 	}
-	
+
 	@Override
-	@Cacheable(value = "findByParent", key="#parent.id")
+	@Cacheable(value = "findByParent")
 	public List<Infant> findByParent(Parent parent, Pageable pageable) {
 		return this.infantRepository.findByParent(parent, pageable).orElse(new ArrayList<Infant>());
 	}
 
 	@Override
 	public Infant findByIdAndParent(Integer id, Parent parent) throws EntityNotFoundException {
-		return this.infantRepository.findByIdAndParent(id, parent)
-				.orElseThrow(() -> new EntityNotFoundException());
+		return this.infantRepository.findByIdAndParent(id, parent).orElseThrow(() -> new EntityNotFoundException());
 	}
 
 }

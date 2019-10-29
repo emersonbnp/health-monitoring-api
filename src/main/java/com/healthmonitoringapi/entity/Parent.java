@@ -15,12 +15,10 @@ import javax.persistence.Table;
 import com.healthmonitoringapi.dto.ParentDTO;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "parent")
 @Data
-@EqualsAndHashCode()
 public class Parent implements Serializable {
 
 	/**
