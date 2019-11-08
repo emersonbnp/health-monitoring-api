@@ -2,6 +2,7 @@ package com.healthmonitoringapi.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,7 +39,7 @@ public class User implements Serializable {
 	@Column(name = "password")
 	private String password;
 	@JoinColumn(name = "idparent", referencedColumnName = "idparent")
-	@OneToOne()
+	@OneToOne(cascade = CascadeType.ALL)
 	private Parent parent;
 
 	public void parse(UserDTO userDTO) {

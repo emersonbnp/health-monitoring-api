@@ -23,4 +23,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		response.setErrors(Arrays.asList(new String [] {error}));
 		return handleExceptionInternal(ex, response, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
+	
+	@ExceptionHandler(Exception.class)
+	protected ResponseEntity<Object> handleGenericConflict(Exception ex, WebRequest request) {
+		String error = ex.getMessage();
+		Response<Object> response = new Response<Object>();
+		response.setErrors(Arrays.asList(new String [] {error}));
+		return handleExceptionInternal(ex, response, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+	}
 }
